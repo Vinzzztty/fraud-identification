@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment files
+.env
+.flaskenv
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Datasets and large zip files (Uncomment if dataset folders are huge and shouldn't be pushed)
+dataset/
+DATASET/
+*.rar
+*.zip
+*.tar.gz
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Model files (Optional: uncomment if you don't want to push the 5MB model binary to Git)
+# models/*.pkl
+
+dataset/
