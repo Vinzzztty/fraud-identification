@@ -38,8 +38,10 @@ def run_scenarios():
     
     # 1. Load the trained RF model
     model_path = "models/rf_model.pkl"
+    encoder_path = "models/label_encoder.pkl"
     try:
         model = joblib.load(model_path)
+        le = joblib.load(encoder_path)
     except Exception as e:
         print(Fore.RED + f"❌ Failed to load models: {e}")
         return
@@ -108,8 +110,13 @@ def run_scenarios():
                 continue
 
             # Predict
-            predicted_label = model.predict(features_2d)[0]
+            predicted_encoded = model.predict(features_2d)[0]
             probabilities = model.predict_proba(features_2d)[0]
+            
+            if np.issubdtype(type(predicted_encoded), np.integer) or str(predicted_encoded).isdigit():
+                predicted_label = le.inverse_transform([int(predicted_encoded)])[0]
+            else:
+                predicted_label = predicted_encoded
             
             if predicted_label.lower() == scenario_name.lower():
                 print(Fore.GREEN + f"✅ SUCCESS: Model correctly predicted {predicted_label.upper()}")
@@ -117,8 +124,8 @@ def run_scenarios():
                 print(Fore.RED + f"⚠️ MISMATCH: Model predicted {predicted_label.upper()} (Expected {scenario_name.upper()})")
                 
             print("\nProbabilities:")
-            for cls, prob in zip(model.classes_, probabilities):
-                print(f"  [{cls.ljust(15)}]: {prob*100:.2f}%")
+            for cls, prob in zip(le.classes_, probabilities):
+                print(f"  [{str(cls).ljust(15)}]: {prob*100:.2f}%")
                 
         except Exception as e:
             print(Fore.RED + f"❌ Failed to process scenario: {e}")

@@ -5,6 +5,8 @@ import numpy as np
 import joblib
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
 from imblearn.over_sampling import SMOTE
 from colorama import init, Fore, Style
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -96,15 +98,21 @@ def train():
     X = np.array(X)
     y = np.array(y)
     
-    # Train validation split isn't strictly necessary just for saving but SMOTE is requested
-    print("Encoding labels and applying SMOTE...")
+    print("Encoding labels...")
     le = LabelEncoder()
-    le.fit(y)
+    y_encoded = le.fit_transform(y)
     
+    print("Splitting dataset (80% Train, 20% Validation)...")
+    X_train, X_val, y_train, y_val = train_test_split(X, y_encoded, test_size=0.2, random_state=42, stratify=y_encoded)
+    
+    print("Applying SMOTE on Training Data only...")
     sm = SMOTE(random_state=42)
-    X_res, y_res = sm.fit_resample(X, y)
+    X_train_res, y_train_res = sm.fit_resample(X_train, y_train)
     
-    print("Training RandomForestClassifier...")
+    print(f"  Training samples before SMOTE: {len(X_train)}")
+    print(f"  Training samples after SMOTE: {len(X_train_res)}")
+    
+    print("\nTraining RandomForestClassifier...")
     rf_model = RandomForestClassifier(
         n_estimators=200,
         max_depth=None,
@@ -112,8 +120,13 @@ def train():
         n_jobs=-1
     )
     
-    rf_model.fit(X_res, y_res)
+    rf_model.fit(X_train_res, y_train_res)
     print(Fore.GREEN + "✅ Training complete.")
+    
+    print(Style.BRIGHT + "\nEvaluating on Validation Data...")
+    y_pred = rf_model.predict(X_val)
+    print(Fore.CYAN + "Classification Report:")
+    print(classification_report(y_val, y_pred, target_names=le.classes_))
     
     os.makedirs("models", exist_ok=True)
     joblib.dump(rf_model, "models/rf_model.pkl")

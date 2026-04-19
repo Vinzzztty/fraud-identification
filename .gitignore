@@ -39,3 +39,6 @@ DATASET/
 # models/*.pkl
 
 dataset/
+
+brief.md 
+PLAN.md

@@ -90,13 +90,14 @@ def main():
         
     print(f"✅ Successfully extracted {features_2d.shape[1]} features.")
 
-    # 6. Predict using the model
     print("\nRunning Model Prediction...")
-    predicted_encoded = model.predict(features_2d)
+    predicted_encoded = model.predict(features_2d)[0]
     probabilities = model.predict_proba(features_2d)[0]
     
-    # model.predict already returns the string label because it was fitted on y_res (string array)
-    predicted_label = predicted_encoded[0]
+    if np.issubdtype(type(predicted_encoded), np.integer) or str(predicted_encoded).isdigit():
+        predicted_label = le.inverse_transform([int(predicted_encoded)])[0]
+    else:
+        predicted_label = predicted_encoded
 
     # 7. Print the results
     print("\n" + "="*40)
