@@ -1,0 +1,25 @@
+Initializing Run-To-Failure Evaluation Pipeline (Anomaly Detection Mode)...
+
+Found 15 files. Chronological order established.
+Evaluating timeline using Baseline Deviation Scoring...
+
+FILE (Waktu)    | PREDIKSI MODEL       | DEVIASI DARI AWAL
+---------------------------------------------------------
+44.csv          | HEALTHY              |   0.00 %
+105.csv         | BEARING FAULT        |  31.26 %
+107.csv         | BEARING FAULT        |  40.42 %
+110.csv         | HEALTHY              |  18.47 %
+111.csv         | HEALTHY              |  19.14 %
+112.csv         | BEARING FAULT        |  98.90 %
+113.csv         | BEARING FAULT        |  29.25 %
+114.csv         | BEARING FAULT        |  99.16 %
+118.csv         | BEARING FAULT        |  25.50 %
+119.csv         | BEARING FAULT        |  33.07 %
+121.csv         | HEALTHY              |  22.48 %
+122.csv         | BEARING FAULT        |  38.49 %
+125.csv         | BEARING FAULT        | 187.73 %
+128.csv         | BEARING FAULT        |  47.98 %
+129.csv         | BEARING FAULT        |  44.84 %
+---------------------------------------------------------
+
+🏁 Timeline Evaluation Complete.
