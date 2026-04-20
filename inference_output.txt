@@ -1,0 +1,36 @@
+(.venv) (base) ➜  Fault_identification git:(main) ✗ python inference.py 
+Initializing Fault Identification Inference pipeline...
+
+✅ Model and Label Encoder loaded successfully.
+✅ Feature extraction module loaded.
+
+Fetching data...
+ℹ️ Loading real test data from: dataset/Vibration_Bearing_RuntoFailure/LogFile_2022-06-20-20-00-31.csv
+ℹ️ Loaded real data: 2000000 samples.
+
+Extracting features...
+✅ Successfully extracted 16 features.
+
+Running Model Prediction...
+
+========================================
+🛠️  DIAGNOSIS RESULT: BEARING
+========================================
+
+Class Probabilities:
+  [bearing        ]: 56.00%
+  [healthy        ]: 44.00%
+(.venv) (base) ➜  Fault_identification git:(main) ✗ python inference_v2.py 
+Initializing Inference Scenarios...
+
+------------------------------------------------------------
+🧪 Scenario: Expected 'BEARING'
+📁 From file: dataset/Vibration_Bearing_RuntoFailure/LogFile_2022-06-20-20-00-31.csv
+🔄 Detected RPM: 1500
+✅ SUCCESS: Model correctly predicted BEARING
+
+Probabilities:
+  [bearing        ]: 56.00%
+  [healthy        ]: 44.00%
+------------------------------------------------------------
+🏁 All scenarios completed.

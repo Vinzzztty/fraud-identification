@@ -102,9 +102,9 @@ def amplitude_near(freq, values, target_freq):
     
 def amplitude_ratio(freq, magnitude, target_freq):
 
-    peak_bw = 0.5 # bandwidth peak
-    guard_bw = 5     # zona aman (hindari leakage)
-    noise_bw = 10    # area noise
+    peak_bw = 2  # bandwidth peak
+    guard_bw = 3     # zona aman (hindari leakage)
+    noise_bw = 5    # area noise
 
     # --- PEAK ---
     mask_peak = (freq >= target_freq - peak_bw) & (freq <= target_freq + peak_bw)

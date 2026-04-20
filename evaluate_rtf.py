@@ -11,15 +11,15 @@ def main():
     print(Style.BRIGHT + "Initializing Run-To-Failure Evaluation Pipeline (Anomaly Detection Mode)...\n")
     
     extract_features = extract_module.extract_features
-    # Constants for feature extraction (fallback defaults)
-    n_ball = 8
-    Bd = 15.5
-    Pd = 72.5
-    sampling_rate = 12000
-    rpm = 1500 
+    # RTF-specific bearing parameters
+    n_ball = 9
+    Bd = 7.938
+    Pd = 38.5
+    sampling_rate = 25600
+    rpm = 1775
     
     # 2. Get Run-to-Failure dataset
-    target_dir = "dataset/DATASET TA/Vibration_Bearing_RuntoFailure (Pengujian dengan Dataset Berbeda)"
+    target_dir = "dataset/Vibration_Bearing_RuntoFailure"
     if not os.path.exists(target_dir):
         print(Fore.RED + f"❌ Error: Directory not found - {target_dir}")
         return
@@ -29,16 +29,9 @@ def main():
         print(Fore.RED + "❌ Error: No CSV files found in the dataset.")
         return
         
-    # Sort files chronologically based on numeric filename
-    def extract_file_number(filepath):
-        basename = os.path.basename(filepath)
-        name_without_ext = os.path.splitext(basename)[0]
-        try:
-            return int(name_without_ext)
-        except ValueError:
-            return 999999 # fallback end
-            
-    csv_files.sort(key=extract_file_number)
+    # Sort files chronologically (String sorting works perfectly for YYYY-MM-DD timestamps)
+    csv_files.sort()
+    
     print(Fore.CYAN + f"Found {len(csv_files)} files. Chronological order established.")
     print("Evaluating timeline using Baseline Deviation Scoring...\n")
     
@@ -53,10 +46,10 @@ def main():
         filename = os.path.basename(f)
         try:
             df = pd.read_csv(f)
-            if df.shape[1] >= 2:
-                signal = pd.to_numeric(df.iloc[:, 1], errors='coerce')
-            else:
-                signal = pd.to_numeric(df.iloc[:, 0], errors='coerce')
+            # RTF files have no header; col 0 & 1 = vibration, col 2 & 3 = temperature
+            df = pd.read_csv(f, header=None)
+            signal = pd.to_numeric(df.iloc[:, 0], errors='coerce') + pd.to_numeric(df.iloc[:, 1], errors='coerce')
+            signal = signal / 2  # average of both vibration axes
                 
             signal = signal.interpolate().ffill().bfill().values
             if len(signal) == 0:
