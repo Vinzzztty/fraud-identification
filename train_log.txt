@@ -9,6 +9,7 @@ Extracting features using all cores...
 ✅ Successfully extracted 258 samples.
 
 Normalizing features per-motor (Step 3: Domain Adaptation)...
+✅ RTF Scaler saved to models/rtf_scaler.pkl
 Encoding labels...
 Classes found: ['bearing' 'healthy']
 Splitting dataset (80% Train, 20% Validation)...
@@ -20,12 +21,12 @@ Training RandomForestClassifier...
 Evaluating on Validation Data...
               precision    recall  f1-score   support
 
-     bearing       0.80      0.86      0.83        28
-     healthy       0.82      0.75      0.78        24
+     bearing       0.87      0.71      0.78        28
+     healthy       0.72      0.88      0.79        24
 
-    accuracy                           0.81        52
-   macro avg       0.81      0.80      0.81        52
-weighted avg       0.81      0.81      0.81        52
+    accuracy                           0.79        52
+   macro avg       0.80      0.79      0.79        52
+weighted avg       0.80      0.79      0.79        52
 
 
 🎉 Model saved successfully!

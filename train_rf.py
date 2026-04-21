@@ -176,6 +176,7 @@ def train():
     
     print("Normalizing features per-motor (Step 3: Domain Adaptation)...")
     X_normalized = np.zeros_like(X)
+    scalers = {}
     for grp in np.unique(groups):
         idx = (groups == grp)
         scaler = StandardScaler()
@@ -183,6 +184,12 @@ def train():
             X_normalized[idx] = scaler.fit_transform(X[idx])
         else:
             X_normalized[idx] = X[idx] - np.mean(X[idx], axis=0)
+        scalers[grp] = scaler
+
+    rtf_group = 'Vibration_Bearing_RuntoFailure'
+    if rtf_group in scalers:
+        joblib.dump(scalers[rtf_group], "models/rtf_scaler.pkl")
+        print(Fore.GREEN + "✅ RTF Scaler saved to models/rtf_scaler.pkl")
             
     print("Encoding labels...")
     le = LabelEncoder()
